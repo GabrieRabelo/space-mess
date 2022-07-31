@@ -1,20 +1,11 @@
 package com.rabelo.spacemess.model
 
-class Planet(val id: Int, width: Int, height: Int) {
+import com.rabelo.spacemess.exception.IllegalPositionException
 
-    private val positions: Array<Array<Position>>
-
-    init {
-        positions = Array(width) { Array(height) { Position() } }
-        for (y in 0 until height) {
-            for (x in 0 until width){
-                val current = positions[y][x]
-                current.x = x
-                current.y = y
-            }
-        }
-    }
-
+class Planet(
+    var id: Int? = null,
+    var positions: Array<Array<Position>>
+) {
 
     override fun toString(): String {
         var allPositions = ""
@@ -24,9 +15,36 @@ class Planet(val id: Int, width: Int, height: Int) {
         return "Planet(id=$id, positions=${allPositions})"
     }
 
-}
+    fun landProbe(probe: SpaceProbe, x: Int, y: Int): Position {
+        if(isPositionValid(x, y)) {
+            val position = positions[x][y]
+            position.probe = probe
+            return position
+        } else throw IllegalPositionException("User tried to land probe into an invalid position.")
+    }
 
-fun main() {
-    var a = Planet(id=1, 5, 5)
-    println(a)
+    private fun isPositionValid(x: Int, y: Int): Boolean {
+        if(y < 0 || y >= positions.size || x < 0 || x >= positions[0].size) {
+            return false
+        }
+        return true
+    }
+
+    fun moveProbe(probe: SpaceProbe): Position {
+        var x = probe.position?.x
+        var y = probe.position?.y
+
+        if (x != null && y != null) {
+            when (probe.direction) {
+                Direction.NORTH -> y += 1
+                Direction.EAST -> x += 1
+                Direction.SOUTH -> y -= 1
+                Direction.WEST -> x -= 1
+            }
+        }
+
+        val newPosition = positions[x!!][y!!]
+        newPosition.probe = probe
+        return newPosition
+    }
 }
