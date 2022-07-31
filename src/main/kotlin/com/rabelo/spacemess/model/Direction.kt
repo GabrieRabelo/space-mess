@@ -1,15 +1,10 @@
 package com.rabelo.spacemess.model
 
-/*
- A direction is to where the SpaceProbe is pointed. All direction implements a left and right
- method that points which direction will be the next or previous.
- */
-
 enum class Direction {
 
     NORTH {
-        override fun left() = EAST
-        override fun right() = WEST
+        override fun left() = WEST
+        override fun right() = EAST
     },
 
     EAST {
