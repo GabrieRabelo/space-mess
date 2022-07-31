@@ -1,6 +1,11 @@
 package com.rabelo.spacemess.model
 
-class SpaceProbe(private val id: String, private var direction: Direction){
+class SpaceProbe(
+    private val id: String ?= null,
+    var direction: Direction,
+    private val planet: Planet ?= null,
+    var position: Position ?= null
+){
 
     fun turnRight() {
         this.direction = this.direction.right()
@@ -11,11 +16,10 @@ class SpaceProbe(private val id: String, private var direction: Direction){
     }
 
     fun move() {
-        // TODO: implement move method
+        this.position = planet?.moveProbe(this)
     }
 
     override fun toString(): String {
         return "SpaceProbe(id='$id', direction=$direction)"
     }
-
 }

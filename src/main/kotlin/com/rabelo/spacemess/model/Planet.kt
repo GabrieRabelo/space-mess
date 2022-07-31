@@ -1,19 +1,12 @@
 package com.rabelo.spacemess.model
 
 import com.rabelo.spacemess.exception.IllegalPositionException
+import com.rabelo.spacemess.exception.ProbeNotFoundException
 
 class Planet(
-    var id: Int? = null,
+    private var id: Int? = null,
     var positions: Array<Array<Position>>
 ) {
-
-    override fun toString(): String {
-        var allPositions = ""
-        for (row in positions) {
-            allPositions += row.contentToString() + "\n"
-        }
-        return "Planet(id=$id, positions=${allPositions})"
-    }
 
     fun landProbe(probe: SpaceProbe, x: Int, y: Int): Position {
         if(isPositionValid(x, y)) {
@@ -31,20 +24,46 @@ class Planet(
     }
 
     fun moveProbe(probe: SpaceProbe): Position {
-        var x = probe.position?.x
-        var y = probe.position?.y
+        val actualXPosition = probe.position?.x!!
+        val actualYPosition = probe.position?.y!!
 
-        if (x != null && y != null) {
-            when (probe.direction) {
-                Direction.NORTH -> y += 1
-                Direction.EAST -> x += 1
-                Direction.SOUTH -> y -= 1
-                Direction.WEST -> x -= 1
-            }
+        if (positions[actualXPosition][actualYPosition].probe != probe) {
+            throw ProbeNotFoundException("Probe is not landed at given position in this planet.")
         }
 
-        val newPosition = positions[x!!][y!!]
+        // Remove probe from previous position
+        positions[actualXPosition][actualYPosition].probe = null
+
+        var newXPosition = actualXPosition
+        var newYPosition = actualYPosition
+
+        // Change x or y point depending on probe direction
+        when (probe.direction) {
+            Direction.NORTH -> newYPosition += 1
+            Direction.EAST -> newXPosition += 1
+            Direction.SOUTH -> newYPosition -= 1
+            Direction.WEST -> newXPosition -= 1
+        }
+
+        // Defines new probe position and return it
+        if (!isPositionValid(newXPosition, newYPosition)) {
+            throw IllegalPositionException("User tried to move the probe into an invalid position.")
+        }
+
+        val newPosition = positions[newXPosition][newYPosition]
         newPosition.probe = probe
         return newPosition
+    }
+
+    override fun toString(): String {
+        var occupiedPosition = ""
+        for (row in positions) {
+            for(pos in row) {
+                if(pos.probe != null) {
+                    occupiedPosition += pos.toString() + "\n"
+                }
+            }
+        }
+        return "Planet(id=$id, occupiedPositions=${occupiedPosition})"
     }
 }
