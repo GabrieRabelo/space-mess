@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test
 internal class PlanetTest {
 
     @Test
-    fun `test landProbe when position is valid should land probe into given position`(){
+    fun `test landProbe when position is valid should land probe into given position`() {
         // Given
         val width = 5
         val height = 5
-        val positions = Array(width) { x -> Array (height) { y -> Position(x = x, y = y)} }
+        val positions = Array(width) { x -> Array(height) { y -> Position(x = x, y = y) } }
 
         val planet = Planet(positions = positions)
         val probe = SpaceProbe(direction = Direction.NORTH)
@@ -26,25 +26,27 @@ internal class PlanetTest {
     }
 
     @Test
-    fun `test landProbe when position is out of bounds should throw IllegalPositionException`(){
+    fun `test landProbe when position is out of bounds should throw IllegalPositionException`() {
         // Given
         val width = 5
         val height = 5
-        val positions = Array(width) { x -> Array (height) { y -> Position(x = x, y = y)} }
+        val positions = Array(width) { x -> Array(height) { y -> Position(x = x, y = y) } }
 
         val planet = Planet(positions = positions)
         val probe = SpaceProbe(direction = Direction.NORTH)
 
         // When / Then
-        assertThatCode { planet.landProbe(probe, 3, 5) }.isInstanceOf(IllegalPositionException::class.java)
+        assertThatCode {
+            planet.landProbe(probe, 3, 5)
+        }.isInstanceOf(IllegalPositionException::class.java)
     }
 
     @Test
-    fun `test moveProbe when position valid should move the probe into the new position`(){
+    fun `test moveProbe when position valid should move the probe into the new position`() {
         // Given
         val width = 5
         val height = 5
-        val positions = Array(width) { x -> Array (height) { y -> Position(x = x, y = y)} }
+        val positions = Array(width) { x -> Array(height) { y -> Position(x = x, y = y) } }
 
         val planet = Planet(positions = positions)
         val probe = SpaceProbe(direction = Direction.NORTH)
@@ -53,18 +55,22 @@ internal class PlanetTest {
         probe.position = position
 
         // When
-        planet.moveProbe(probe)
+        val newPosition = planet.moveProbe(probe)
+
+        assertThat(newPosition)
+            .usingRecursiveComparison()
+            .isEqualTo(Position(probe, 3, 4))
 
         assertThat(planet.positions[3][4].probe).isEqualTo(probe)
         assertThat(planet.positions[3][3].probe).isNull()
     }
 
     @Test
-    fun `test moveProbe when position does not have a probe should throw ProbeNotFoundException`(){
+    fun `test moveProbe when position does not have a probe should throw ProbeNotFoundException`() {
         // Given
         val width = 5
         val height = 5
-        val positions = Array(width) { x -> Array (height) { y -> Position(x = x, y = y)} }
+        val positions = Array(width) { x -> Array(height) { y -> Position(x = x, y = y) } }
 
         val planet = Planet(positions = positions)
         val probe = SpaceProbe(direction = Direction.NORTH)

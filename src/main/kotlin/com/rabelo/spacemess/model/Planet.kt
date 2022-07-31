@@ -9,11 +9,13 @@ class Planet(
 ) {
 
     fun landProbe(probe: SpaceProbe, x: Int, y: Int): Position {
-        if(isPositionValid(x, y)) {
-            val position = positions[x][y]
-            position.probe = probe
-            return position
-        } else throw IllegalPositionException("User tried to land probe into an invalid position.")
+        if(!isPositionValid(x,y)) {
+            throw IllegalPositionException("User tried to land probe into an invalid position.")
+        }
+
+        val position = positions[x][y]
+        position.probe = probe
+        return position
     }
 
     private fun isPositionValid(x: Int, y: Int): Boolean {
