@@ -5,81 +5,35 @@ import com.rabelo.spacemess.exception.ProbeNotFoundException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatCode
 import org.junit.jupiter.api.Test
+import java.awt.Point
 
 internal class PlanetTest {
 
     @Test
-    fun `test landProbe when position is valid should land probe into given position`() {
+    fun `test landProbe when there is not an obstacle should land probe into given position`() {
         // Given
-        val width = 5
-        val height = 5
-        val positions = Array(width) { x -> Array(height) { y -> Position(x = x, y = y) } }
-
-        val planet = Planet(positions = positions)
+        val planet = Planet(latitude = 5, longitude = 5)
         val probe = SpaceProbe(direction = Direction.NORTH)
+        val position = Point(3, 4)
 
         // When
-        planet.landProbe(probe, 3, 4)
+        planet.landProbe(probe, position)
 
         // Then
-        assertThat(planet.positions[3][4].probe).isEqualTo(probe)
+        assertThat(planet.obstacles).contains(probe)
     }
 
     @Test
     fun `test landProbe when position is out of bounds should throw IllegalPositionException`() {
         // Given
-        val width = 5
-        val height = 5
-        val positions = Array(width) { x -> Array(height) { y -> Position(x = x, y = y) } }
-
-        val planet = Planet(positions = positions)
+        val planet = Planet(latitude = 5, longitude = 5)
         val probe = SpaceProbe(direction = Direction.NORTH)
+        val position = Point(6, 6)
 
         // When / Then
         assertThatCode {
-            planet.landProbe(probe, 3, 5)
+            planet.landProbe(probe, position)
         }.isInstanceOf(IllegalPositionException::class.java)
-    }
-
-    @Test
-    fun `test moveProbe when position valid should move the probe into the new position`() {
-        // Given
-        val width = 5
-        val height = 5
-        val positions = Array(width) { x -> Array(height) { y -> Position(x = x, y = y) } }
-
-        val planet = Planet(positions = positions)
-        val probe = SpaceProbe(direction = Direction.NORTH)
-        val position = planet.positions[3][3]
-        position.probe = probe
-        probe.position = position
-
-        // When
-        val newPosition = planet.moveProbe(probe)
-
-        assertThat(newPosition)
-            .usingRecursiveComparison()
-            .isEqualTo(Position(probe, 3, 4))
-
-        assertThat(planet.positions[3][4].probe).isEqualTo(probe)
-        assertThat(planet.positions[3][3].probe).isNull()
-    }
-
-    @Test
-    fun `test moveProbe when position does not have a probe should throw ProbeNotFoundException`() {
-        // Given
-        val width = 5
-        val height = 5
-        val positions = Array(width) { x -> Array(height) { y -> Position(x = x, y = y) } }
-
-        val planet = Planet(positions = positions)
-        val probe = SpaceProbe(direction = Direction.NORTH)
-        val position = planet.positions[4][4]
-        probe.position = position
-
-        // When / Then
-        assertThatCode { planet.moveProbe(probe) }.isInstanceOf(ProbeNotFoundException::class.java)
-
     }
 
 }

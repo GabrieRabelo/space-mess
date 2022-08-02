@@ -1,71 +1,74 @@
 package com.rabelo.spacemess.model
 
 import com.rabelo.spacemess.exception.IllegalPositionException
-import com.rabelo.spacemess.exception.ProbeNotFoundException
+import com.rabelo.spacemess.exception.ProbeAlreadyOnPlanetException
+import java.awt.Point
+import java.lang.RuntimeException
 
 class Planet(
     private var id: Int? = null,
-    var positions: Array<Array<Position>>
+    var longitude: Int,
+    var latitude: Int,
+    var obstacles: MutableList<Obstacle> = mutableListOf()
 ) {
 
-    fun landProbe(probe: SpaceProbe, x: Int, y: Int): Position {
-        if(!isPositionValid(x,y)) {
-            throw IllegalPositionException("User tried to land probe into an invalid position.")
-        }
+    fun landProbe(probe: SpaceProbe, point: Point): Point {
 
-        val position = positions[x][y]
-        position.probe = probe
-        return position
+        validatePosition(point)
+        validateDuplicatedProbe(probe)
+
+        obstacles.add(probe)
+
+        return point
+
     }
 
-    private fun isPositionValid(x: Int, y: Int): Boolean {
-        if(y < 0 || y >= positions.size || x < 0 || x >= positions[0].size) {
-            return false
+    private fun validateDuplicatedProbe(probe: SpaceProbe) {
+        if (obstacles.any { it == probe }) {
+            throw ProbeAlreadyOnPlanetException("User tried to land a probe that already is on the planet.")
         }
-        return true
     }
 
-    fun moveProbe(probe: SpaceProbe): Position {
-        val actualXPosition = probe.position?.x!!
-        val actualYPosition = probe.position?.y!!
-
-        if (positions[actualXPosition][actualYPosition].probe != probe) {
-            throw ProbeNotFoundException("Probe is not landed at given position in this planet.")
+    fun validatePosition(point: Point) {
+        if (point.x < 0 || point.x >= this.longitude || point.y < 0 || point.y >= latitude) {
+            throw IllegalPositionException("User tried to land probe into an invalid latitude or longitude.")
         }
+        if (obstacles.any { it.position == point }) {
+            throw IllegalPositionException("User tried to land probe into an obstacle.")
+        }
+    }
 
-        // Remove probe from previous position
-        positions[actualXPosition][actualYPosition].probe = null
-
-        var newXPosition = actualXPosition
-        var newYPosition = actualYPosition
-
-        // Change x or y point depending on probe direction
+    fun calculateNextStep(probe: SpaceProbe): Point {
+        var newX = probe.position!!.x
+        var newY = probe.position!!.y
         when (probe.direction) {
-            Direction.NORTH -> newYPosition += 1
-            Direction.EAST -> newXPosition += 1
-            Direction.SOUTH -> newYPosition -= 1
-            Direction.WEST -> newXPosition -= 1
-        }
-
-        // Defines new probe position and return it
-        if (!isPositionValid(newXPosition, newYPosition)) {
-            throw IllegalPositionException("User tried to move the probe into an invalid position.")
-        }
-
-        val newPosition = positions[newXPosition][newYPosition]
-        newPosition.probe = probe
-        return newPosition
-    }
-
-    override fun toString(): String {
-        var occupiedPosition = ""
-        for (row in positions) {
-            for(pos in row) {
-                if(pos.probe != null) {
-                    occupiedPosition += pos.toString() + "\n"
-                }
+            Direction.NORTH -> {
+                if (newY + 1 > this.latitude) {
+                    newY = 0
+                } else newY +=1
             }
+            Direction.EAST -> {
+                if (newX + 1 > this.longitude) {
+                    newX = 0
+                } else newX +=1
+            }
+            Direction.SOUTH -> {
+                if (newY - 1 < 0) {
+                    newY = this.latitude
+                } else newY -=1
+            }
+            Direction.WEST -> {
+                if (newX - 1 < 0) {
+                    newX = this.longitude
+                } else newX -=1
+            }
+
+            else -> {
+                throw RuntimeException("")
+            } // TODO add an exception
         }
-        return "Planet(id=$id, occupiedPositions=${occupiedPosition})"
+
+        return Point(newX, newY)
     }
+
 }
