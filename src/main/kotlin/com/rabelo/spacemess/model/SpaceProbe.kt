@@ -1,11 +1,15 @@
 package com.rabelo.spacemess.model
 
 import com.rabelo.spacemess.exception.ProbeNotLandedException
+import com.rabelo.spacemess.exception.InvalidDirectionException
 import java.awt.Point
 
-class SpaceProbe(
-    private val id: String ?= null,
-    var direction: Direction ?= null): Obstacle() {
+data class SpaceProbe(
+    private val id: Int? = null,
+    var direction: Direction? = null,
+    var position: Point? = null,
+    var planet: Planet? = null
+) {
 
     fun turnRight() {
         this.direction = this.direction?.right()
@@ -23,12 +27,49 @@ class SpaceProbe(
     }
 
     fun move() {
-        if(planet == null) {
+        if (planet == null) {
             throw ProbeNotLandedException("User tried to move a probe that is not on a planet.")
         }
-        val newPosition = this.planet!!.calculateNextStep(this)
-        this.planet!!.validatePosition(this.position!!)
+        val newPosition = this.calculateNextStep()
+        this.planet!!.validatePosition(newPosition)
         this.position = newPosition
+    }
+
+    private fun calculateNextStep(): Point {
+        var newX = this.position!!.x
+        var newY = this.position!!.y
+
+        when (this.direction) {
+            Direction.NORTH -> {
+                if (newY + 1 > this.planet?.height!!) {
+                    newY = 0
+                } else newY += 1
+            }
+
+            Direction.EAST -> {
+                if (newX + 1 > this.planet?.width!!) {
+                    newX = 0
+                } else newX += 1
+            }
+
+            Direction.SOUTH -> {
+                if (newY - 1 < 0) {
+                    newY = this.planet?.height!!
+                } else newY -= 1
+            }
+
+            Direction.WEST -> {
+                if (newX - 1 < 0) {
+                    newX = this.planet?.width!!
+                } else newX -= 1
+            }
+
+            else -> {
+                throw InvalidDirectionException("Invalid direction on SpaceProbe, verify probe configuration")
+            }
+        }
+
+        return Point(newX, newY)
     }
 
     override fun toString(): String {
