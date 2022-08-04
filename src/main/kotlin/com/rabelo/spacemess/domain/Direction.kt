@@ -1,4 +1,4 @@
-package com.rabelo.spacemess.model
+package com.rabelo.spacemess.domain
 
 enum class Direction {
 

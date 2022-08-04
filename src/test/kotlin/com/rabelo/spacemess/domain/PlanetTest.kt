@@ -1,4 +1,4 @@
-package com.rabelo.spacemess.model
+package com.rabelo.spacemess.domain
 
 import com.rabelo.spacemess.exception.IllegalPositionException
 import com.rabelo.spacemess.exception.ProbeAlreadyOnPlanetException

@@ -1,14 +1,23 @@
-package com.rabelo.spacemess.model
+package com.rabelo.spacemess.domain
 
 import com.rabelo.spacemess.exception.IllegalPositionException
 import com.rabelo.spacemess.exception.ProbeAlreadyOnPlanetException
 import java.awt.Point
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.OneToMany
 
+@Entity
 class Planet(
-    private var id: Int? = null,
     var width: Int? = null,
     var height: Int? = null,
-    var probes: MutableList<SpaceProbe> = mutableListOf()
+    @OneToMany
+    var probes: MutableList<SpaceProbe> = mutableListOf(),
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Int? = null,
 ) {
 
     fun landProbe(probe: SpaceProbe, point: Point) {

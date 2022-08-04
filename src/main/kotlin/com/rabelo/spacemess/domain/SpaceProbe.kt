@@ -1,14 +1,22 @@
-package com.rabelo.spacemess.model
+package com.rabelo.spacemess.domain
 
 import com.rabelo.spacemess.exception.ProbeNotLandedException
 import com.rabelo.spacemess.exception.InvalidDirectionException
 import java.awt.Point
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.ManyToOne
 
-data class SpaceProbe(
-    private val id: Int? = null,
+@Entity
+class SpaceProbe(
     var direction: Direction? = null,
     var position: Point? = null,
-    var planet: Planet? = null
+    @ManyToOne
+    var planet: Planet? = null,
+    @Id
+    @GeneratedValue
+    var id: Int? = null
 ) {
 
     fun turnRight() {

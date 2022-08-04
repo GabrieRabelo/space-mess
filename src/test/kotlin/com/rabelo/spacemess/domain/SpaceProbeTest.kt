@@ -1,4 +1,4 @@
-package com.rabelo.spacemess.model
+package com.rabelo.spacemess.domain
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -19,11 +19,9 @@ internal class SpaceProbeTest {
     fun `test turnRight should turn right`(direction: Direction) {
         val probe = SpaceProbe(direction = direction)
 
-        val expectedProbe = probe.copy(direction = direction.right())
-
         probe.turnRight()
 
-        assertThat(probe).isEqualTo(expectedProbe)
+        assertThat(probe.direction).isEqualTo(direction.right())
     }
 
     @ParameterizedTest
@@ -31,11 +29,9 @@ internal class SpaceProbeTest {
     fun `test turnLeft should change direction to left`(direction: Direction) {
         val probe = SpaceProbe(direction = direction)
 
-        val expectedProbe = probe.copy(direction = direction.left())
-
         probe.turnLeft()
 
-        assertThat(probe).isEqualTo(expectedProbe)
+        assertThat(probe.direction).isEqualTo(direction.left())
     }
 
     @Test
