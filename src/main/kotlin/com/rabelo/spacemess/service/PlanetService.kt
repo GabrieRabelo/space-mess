@@ -16,4 +16,8 @@ class PlanetService(
         val entity = planetConverter.fromCreatePlanetDTO(createPlanetDTO)
         return planetRepository.save(entity)
     }
+
+    fun findAllPlanets() : MutableIterable<Planet> {
+        return planetRepository.findAll()
+    }
 }
