@@ -1,4 +1,4 @@
-package com.rabelo.spacemess.controller.converter
+package com.rabelo.spacemess.converter
 
 import com.rabelo.spacemess.controller.dto.CreatePlanetDTO
 import com.rabelo.spacemess.controller.dto.PlanetResponseDTO

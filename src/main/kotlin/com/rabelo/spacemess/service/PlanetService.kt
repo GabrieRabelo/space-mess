@@ -1,6 +1,6 @@
 package com.rabelo.spacemess.service
 
-import com.rabelo.spacemess.controller.converter.PlanetConverter
+import com.rabelo.spacemess.converter.PlanetConverter
 import com.rabelo.spacemess.controller.dto.CreatePlanetDTO
 import com.rabelo.spacemess.controller.dto.PlanetResponseDTO
 import com.rabelo.spacemess.repository.PlanetRepository
