@@ -30,6 +30,7 @@ class SpaceProbeService(
         return spaceProbeRepository.findAll()
             .map { spaceProbeConverter.toSpaceProbeResponse(it) }
             .toList()
+            .also { logger.debug("Successfully listed all probes." ) }
     }
 
     fun landProbe(probeId: Int, landProbeRequest: LandProbeRequestDTO): SpaceProbeResponseDTO {

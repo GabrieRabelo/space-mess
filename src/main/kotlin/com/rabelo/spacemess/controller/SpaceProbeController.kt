@@ -24,13 +24,14 @@ class SpaceProbeController(private val spaceProbeService: SpaceProbeService) {
     @PostMapping
     @ApiResponse(responseCode = "201", description = "Create a space probe")
     fun createSpaceProbe(): ResponseEntity<SpaceProbeResponseDTO> {
-        logger.info("Creating space probe")
+        logger.info("Creating space probe.")
         return ResponseEntity(spaceProbeService.createSpaceProbe(), HttpStatus.CREATED)
     }
 
     @GetMapping
     @ApiResponse(responseCode = "200", description = "Retrieve a space probe list")
     fun findSpaceProbes(): ResponseEntity<List<SpaceProbeResponseDTO>> {
+        logger.info("Finding all space probes.")
         return ResponseEntity(spaceProbeService.findAllSpaceProbes(), HttpStatus.OK)
     }
 
@@ -40,6 +41,7 @@ class SpaceProbeController(private val spaceProbeService: SpaceProbeService) {
         @PathVariable @Valid id: Int,
         @RequestBody @Valid landProbeRequestDTO: LandProbeRequestDTO
     ): ResponseEntity<SpaceProbeResponseDTO> {
+        logger.info("Landing probe {} with request {}.", id, landProbeRequestDTO)
         return ResponseEntity(spaceProbeService.landProbe(id, landProbeRequestDTO), HttpStatus.OK)
     }
 
