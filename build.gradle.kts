@@ -12,7 +12,7 @@ plugins {
 
 val jar by tasks.getting(Jar::class) {
     manifest {
-        attributes["Main-Class"] = "com.rabelo.spacemess"
+        attributes["Main-Class"] = "com.rabelo.spacemess.SpaceMessApplication.kt"
     }
 }
 
