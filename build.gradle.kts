@@ -11,6 +11,8 @@ plugins {
 }
 
 val jar by tasks.getting(Jar::class) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
     manifest {
         attributes["Main-Class"] = "com.rabelo.spacemess.SpaceMessApplicationKt"
     }
