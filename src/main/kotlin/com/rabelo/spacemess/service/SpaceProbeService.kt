@@ -5,6 +5,7 @@ import com.rabelo.spacemess.controller.dto.SendCommandRequestDTO
 import com.rabelo.spacemess.controller.dto.SpaceProbeResponseDTO
 import com.rabelo.spacemess.converter.SpaceProbeConverter
 import com.rabelo.spacemess.domain.SpaceProbe
+import com.rabelo.spacemess.exception.IllegalPositionException
 import com.rabelo.spacemess.exception.ProbeAlreadyOnPlanetException
 import com.rabelo.spacemess.repository.PlanetRepository
 import com.rabelo.spacemess.repository.SpaceProbeRepository
@@ -57,11 +58,15 @@ class SpaceProbeService(
     fun sendCommand(probeId: Int, sendCommandRequestDTO: SendCommandRequestDTO): SpaceProbeResponseDTO {
         val probe = spaceProbeRepository.findById(probeId).orElseGet { throw NotFoundException("") }
 
-        probe.receiveCommand(sendCommandRequestDTO.command)
+        try{
+            probe.receiveCommand(sendCommandRequestDTO.command)
+        } catch (ex: IllegalPositionException) {
+            logger.warn("Probe {} detected an obstacle, stop moving.", probeId)
+        }
 
         return spaceProbeRepository.save(probe)
             .let { spaceProbeConverter.toSpaceProbeResponse(probe) }
-            .also { logger.debug("Successfully moved space probe. Response: {}", it) }
+            .also { logger.debug("Successfully received command succesfully space probe. Response: {}", it) }
     }
 
     companion object {

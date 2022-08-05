@@ -35,6 +35,10 @@ class SpaceProbe(
     }
 
     fun receiveCommand(command: String) {
+        if (planet == null) {
+            throw ProbeNotLandedException("User tried to move a probe that is not on a planet.")
+        }
+
         for (char in command) {
             when(char) {
                 'L' -> this.turnLeft()
@@ -45,9 +49,6 @@ class SpaceProbe(
     }
 
     fun move() {
-        if (planet == null) {
-            throw ProbeNotLandedException("User tried to move a probe that is not on a planet.")
-        }
         val newPosition = this.calculateNextStep()
         this.planet!!.validateObstacle(newPosition)
         this.position = newPosition

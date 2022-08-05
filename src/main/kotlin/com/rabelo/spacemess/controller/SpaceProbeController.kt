@@ -46,7 +46,7 @@ class SpaceProbeController(private val spaceProbeService: SpaceProbeService) {
         return ResponseEntity(spaceProbeService.landProbe(id, landProbeRequestDTO), HttpStatus.OK)
     }
 
-    @PatchMapping("/{id}/move")
+    @PatchMapping("/{id}/command")
     @ApiResponse(responseCode = "200", description = "Move a probe in a planet")
     fun moveProbe(
         @PathVariable @Valid id: Int,
