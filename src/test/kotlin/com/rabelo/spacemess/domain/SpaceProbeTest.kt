@@ -66,7 +66,7 @@ internal class SpaceProbeTest {
         val expectedProbe = SpaceProbe(direction = Direction.NORTH, position = expectedPosition, planet = planetMock)
 
         `when`(planetMock.height).thenReturn(5)
-        doNothing().`when`(planetMock).validateAreaBoundaries(expectedPosition)
+        doNothing().`when`(planetMock).validateObstacle(expectedPosition)
 
         // When
         probe.move()
@@ -88,7 +88,7 @@ internal class SpaceProbeTest {
         val expectedProbe = SpaceProbe(direction = Direction.NORTH, position = expectedPosition, planet = planetMock)
 
         `when`(planetMock.height).thenReturn(5)
-        doNothing().`when`(planetMock).validateAreaBoundaries(expectedPosition)
+        doNothing().`when`(planetMock).validateObstacle(expectedPosition)
 
         // When
         probe.move()
@@ -110,7 +110,7 @@ internal class SpaceProbeTest {
         val expectedProbe = SpaceProbe(direction = Direction.SOUTH, position = newPosition, planet = planetMock)
 
         `when`(planetMock.height).thenReturn(5)
-        doNothing().`when`(planetMock).validateAreaBoundaries(newPosition)
+        doNothing().`when`(planetMock).validateObstacle(newPosition)
 
         // When
         probe.move()
@@ -130,7 +130,7 @@ internal class SpaceProbeTest {
         val newPosition = Point(2,3)
         val expectedProbe = SpaceProbe(direction = Direction.WEST, position = newPosition, planet = planetMock)
 
-        doNothing().`when`(planetMock).validateAreaBoundaries(newPosition)
+        doNothing().`when`(planetMock).validateObstacle(newPosition)
 
         // When
         probe.move()
@@ -151,7 +151,7 @@ internal class SpaceProbeTest {
         val expectedPosition = Point(0,3)
         val expectedProbe = SpaceProbe(direction = Direction.EAST, position = expectedPosition, planet = planetMock)
 
-        doNothing().`when`(planetMock).validateAreaBoundaries(expectedPosition)
+        doNothing().`when`(planetMock).validateObstacle(expectedPosition)
 
         // When
         probe.move()
@@ -173,7 +173,7 @@ internal class SpaceProbeTest {
         val expectedProbe = SpaceProbe(direction = Direction.WEST, position = expectedPosition, planet = planetMock)
 
         `when`(planetMock.width).thenReturn(5)
-        doNothing().`when`(planetMock).validateAreaBoundaries(expectedPosition)
+        doNothing().`when`(planetMock).validateObstacle(expectedPosition)
 
         // When
         probe.move()
