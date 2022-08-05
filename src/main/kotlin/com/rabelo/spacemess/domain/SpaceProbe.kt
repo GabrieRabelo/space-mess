@@ -80,6 +80,10 @@ class SpaceProbe(
         return Point(newX, newY)
     }
 
+    fun isLanded() : Boolean {
+        return planet == null
+    }
+
     override fun toString(): String {
         return "SpaceProbe(id='$id', direction=$direction)"
     }
