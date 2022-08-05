@@ -1,6 +1,7 @@
 package com.rabelo.spacemess.controller
 
 import com.rabelo.spacemess.controller.dto.LandProbeRequestDTO
+import com.rabelo.spacemess.controller.dto.SendCommandRequestDTO
 import com.rabelo.spacemess.controller.dto.SpaceProbeResponseDTO
 import com.rabelo.spacemess.service.SpaceProbeService
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -36,13 +37,23 @@ class SpaceProbeController(private val spaceProbeService: SpaceProbeService) {
     }
 
     @PatchMapping("/{id}/land")
-    @ApiResponse(responseCode = "200", description = "Retrieve a space probe list")
+    @ApiResponse(responseCode = "200", description = "Land a probe in a planet")
     fun landProbe(
         @PathVariable @Valid id: Int,
         @RequestBody @Valid landProbeRequestDTO: LandProbeRequestDTO
     ): ResponseEntity<SpaceProbeResponseDTO> {
         logger.info("Landing probe {} with request {}.", id, landProbeRequestDTO)
         return ResponseEntity(spaceProbeService.landProbe(id, landProbeRequestDTO), HttpStatus.OK)
+    }
+
+    @PatchMapping("/{id}/move")
+    @ApiResponse(responseCode = "200", description = "Move a probe in a planet")
+    fun moveProbe(
+        @PathVariable @Valid id: Int,
+        @RequestBody @Valid sendCommandRequestDTO: SendCommandRequestDTO
+    ): ResponseEntity<SpaceProbeResponseDTO> {
+        logger.info("Sending command to probe {} with request {}.", id, sendCommandRequestDTO)
+        return ResponseEntity(spaceProbeService.sendCommand(id, sendCommandRequestDTO), HttpStatus.OK)
     }
 
     companion object {

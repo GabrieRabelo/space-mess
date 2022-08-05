@@ -23,19 +23,25 @@ class Planet(
     fun landProbe(probe: SpaceProbe, point: Point) {
 
         validateDuplicatedProbe(probe)
-        validatePosition(point)
+        validateAreaBoundaries(point)
+        validateObstacle(point)
 
         probes.add(probe)
     }
 
-    fun validatePosition(point: Point) {
+    fun validateAreaBoundaries(point: Point) {
         if (point.x < 0 || point.x >= this.width!! || point.y < 0 || point.y >= height!!) {
             throw IllegalPositionException("User tried to land probe into an invalid area.")
         }
+    }
+
+    fun validateObstacle(point: Point) {
         if (probes.any { it.position == point }) {
             throw IllegalPositionException("User tried to land probe into another probe.")
         }
     }
+
+
 
     private fun validateDuplicatedProbe(probe: SpaceProbe) {
         if (probes.any { it == probe }) {

@@ -1,6 +1,7 @@
 package com.rabelo.spacemess.service
 
 import com.rabelo.spacemess.controller.dto.LandProbeRequestDTO
+import com.rabelo.spacemess.controller.dto.SendCommandRequestDTO
 import com.rabelo.spacemess.controller.dto.SpaceProbeResponseDTO
 import com.rabelo.spacemess.converter.SpaceProbeConverter
 import com.rabelo.spacemess.domain.SpaceProbe
@@ -51,6 +52,16 @@ class SpaceProbeService(
 
         return spaceProbeConverter.toSpaceProbeResponse(spaceProbeRepository.save(probe))
             .also { logger.debug("Successfully landed space probe. Response: {}", it) }
+    }
+
+    fun sendCommand(probeId: Int, sendCommandRequestDTO: SendCommandRequestDTO): SpaceProbeResponseDTO {
+        val probe = spaceProbeRepository.findById(probeId).orElseGet { throw NotFoundException("") }
+
+        probe.receiveCommand(sendCommandRequestDTO.command)
+
+        return spaceProbeRepository.save(probe)
+            .let { spaceProbeConverter.toSpaceProbeResponse(probe) }
+            .also { logger.debug("Successfully moved space probe. Response: {}", it) }
     }
 
     companion object {

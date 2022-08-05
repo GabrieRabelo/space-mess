@@ -34,12 +34,22 @@ class SpaceProbe(
         this.direction = direction
     }
 
+    fun receiveCommand(command: String) {
+        for (char in command) {
+            when(char) {
+                'L' -> this.turnLeft()
+                'R' -> this.turnRight()
+                'M' -> this.move()
+            }
+        }
+    }
+
     fun move() {
         if (planet == null) {
             throw ProbeNotLandedException("User tried to move a probe that is not on a planet.")
         }
         val newPosition = this.calculateNextStep()
-        this.planet!!.validatePosition(newPosition)
+        this.planet!!.validateObstacle(newPosition)
         this.position = newPosition
     }
 
@@ -81,7 +91,7 @@ class SpaceProbe(
     }
 
     fun isLanded() : Boolean {
-        return planet == null
+        return planet != null
     }
 
     override fun toString(): String {

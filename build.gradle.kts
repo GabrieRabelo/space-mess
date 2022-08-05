@@ -14,6 +14,8 @@ val jar by tasks.getting(Jar::class) {
     manifest {
         attributes["Main-Class"] = "com.rabelo.spacemess.SpaceMessApplicationKt"
     }
+
+    from(configurations.compileClasspath.map { config -> config.map { if (it.isDirectory) it else zipTree(it) } })
 }
 
 group = "com.rabelo"
