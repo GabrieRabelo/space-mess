@@ -1,1 +1,1 @@
-web: java -jar build/libs/space-mess.jar --server.port=$PORT
+web: java -jar build/libs/space-mess-0.0.1-SNAPSHOT-plain.jar --server.port=$PORT
