@@ -10,7 +10,7 @@ Probe 1 land position: x=1, y=2 with direction to north
 Commands sequence: LMLMLMLMM
 Final probe position: x=1 y=3 with direction to north
 
-Probe 2 land position : x=3, y=3 with direction to north
+Probe 2 land position : x=3, y=3 with direction to east
 Commands sequence: MMRMMRMRRML
 Final probe position: x=5 y=1 with direction to north
 ```

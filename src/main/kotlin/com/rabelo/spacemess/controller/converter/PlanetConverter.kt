@@ -1,6 +1,7 @@
 package com.rabelo.spacemess.controller.converter
 
 import com.rabelo.spacemess.controller.dto.CreatePlanetDTO
+import com.rabelo.spacemess.controller.dto.PlanetResponseDTO
 import com.rabelo.spacemess.domain.Planet
 import org.springframework.stereotype.Component
 
@@ -9,5 +10,9 @@ class PlanetConverter {
 
     fun fromCreatePlanetDTO(createPlanetDTO: CreatePlanetDTO) : Planet{
         return Planet(height = createPlanetDTO.height, width = createPlanetDTO.width)
+    }
+
+    fun toPlanetResponse(planet: Planet) : PlanetResponseDTO {
+        return PlanetResponseDTO(planet.width!!, planet.height!!, planet.id!!)
     }
 }
