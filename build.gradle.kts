@@ -10,6 +10,12 @@ plugins {
     kotlin("plugin.allopen") version "1.6.21"
 }
 
+val jar by tasks.getting(Jar::class) {
+    manifest {
+        attributes["Main-Class"] = "com.rabelo.spacemess"
+    }
+}
+
 group = "com.rabelo"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
