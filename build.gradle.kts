@@ -90,8 +90,8 @@ sonarqube {
     // or via token, https://docs.sonarqube.org/latest/analysis/analysis-parameters/
     properties {
         // Default properties if somebody wants to execute it locally
-        property("sonar.projectKey", "space-mess")
-        property("sonar.organization", "rabelo")
+        property("sonar.projectKey", "GabrieRabelo_space-mess")
+        property("sonar.organization", "gabrierabelo")
         property("sonar.host.url", "https://sonarcloud.io")
     }
 }

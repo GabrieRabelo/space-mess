@@ -1,3 +1,5 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=GabrieRabelo_space-mess&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=GabrieRabelo_space-mess)
+
 # Space Mess
 
 The problem:
