@@ -10,16 +10,6 @@ plugins {
     kotlin("plugin.allopen") version "1.6.21"
 }
 
-val jar by tasks.getting(Jar::class) {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
-    manifest {
-        attributes["Main-Class"] = "com.rabelo.spacemess.SpaceMessApplicationKt"
-    }
-
-    from(configurations.compileClasspath.map { config -> config.map { if (it.isDirectory) it else zipTree(it) } })
-}
-
 group = "com.rabelo"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
@@ -53,6 +43,16 @@ dependencies {
     testImplementation("org.mockito:mockito-inline:4.6.1")
 }
 
+val jar by tasks.getting(Jar::class) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+        attributes["Main-Class"] = "com.rabelo.spacemess.SpaceMessApplicationKt"
+    }
+
+    from(configurations.compileClasspath.map { config -> config.map { if (it.isDirectory) it else zipTree(it) } })
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
@@ -81,5 +81,17 @@ tasks.test {
 tasks.jacocoTestReport {
     reports {
         xml.required.set(true)
+        xml.outputLocation.set(file("${buildDir}/reports/jacoco/report.xml"))
+    }
+}
+
+sonarqube {
+    // If you want to use this locally a sonarLogin has to be provided, either via Username and Password
+    // or via token, https://docs.sonarqube.org/latest/analysis/analysis-parameters/
+    properties {
+        // Default properties if somebody wants to execute it locally
+        property("sonar.projectKey", "space-mess")
+        property("sonar.organization", "rabelo")
+        property("sonar.host.url", "https://sonarcloud.io")
     }
 }
