@@ -54,9 +54,27 @@ Example payload:
 At least, the route `PATCH /probes/{id}/command` accepts a command to send to a landed probe.
 
 Example payload:
-```
+```json
 {
   "command": "LMRRRMLR"
 }
 ```
 
+## Stack
+
+* Programming Language: Kotlin
+* Framework: Spring Boot
+* Dependencies Manager: Gradle
+* Embedded database: H2 
+
+## How to run
+
+To run this application, we need to run the following gradle command:
+
+`./gradlew clean bootrun`
+
+## Documentation
+After running the application, the route 
+`http://localhost:8080/swagger-ui/index.html#/` is used to access the live documentation (OpenAPI).
+
+![swagger](https://i.imgur.com/0FHdnyj.png)
