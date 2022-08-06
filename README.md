@@ -19,17 +19,44 @@ So I thought...
 
 ![my modeling](https://i.imgur.com/vrNUELR.png)
 
-Let's start to code!
+## How does that works?
 
-## Starting by domain
+On this application, it's possible to create a planet to register its size and also create a 
+probe to control.
 
-+ Planet
+### Creating a planet
+The route `POST /planets` exists to create a planet, and it expects a height and width of initial area.\
+Example payload:
+```json
+{
+  "height": 0,
+  "width": 0
+}
+```
 
-  Has a width and height that will serve as a delimiter of possible positions.
-  * If a probe cross this limit, will reach the other side of the planet
+### Creating a probe
+To create a probe the route `POST /probes` is available without any payload.
 
-+ SpaceProbe
-  
-  Has turn left and right movements
-  Can land in a planet
-  Can calculate its next step
+### Landing a probe
+In order to land a probe into a planet the route is `PATCH /probes/{id}/land` where {id} stands for id of a previous created probe.
+
+Example payload:
+```json
+{
+  "planetId":2,
+  "x": 3,
+  "y": 3,
+  "direction": "NORTH"
+}
+```
+
+### Moving a probe
+At least, the route `PATCH /probes/{id}/command` accepts a command to send to a landed probe.
+
+Example payload:
+```
+{
+  "command": "LMRRRMLR"
+}
+```
+
