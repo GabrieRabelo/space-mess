@@ -1,4 +1,4 @@
-package com.rabelo.spacemess.controller.dto
+package com.rabelo.spacemess.service.dto
 
 import com.rabelo.spacemess.domain.Direction
 import javax.validation.constraints.NotNull

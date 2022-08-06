@@ -1,4 +1,4 @@
-package com.rabelo.spacemess.controller.dto
+package com.rabelo.spacemess.service.dto
 
 data class PlanetResponseDTO(
     var width: Int,

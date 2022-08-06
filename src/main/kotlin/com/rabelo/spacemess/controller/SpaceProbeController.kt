@@ -1,8 +1,8 @@
 package com.rabelo.spacemess.controller
 
-import com.rabelo.spacemess.controller.dto.LandProbeRequestDTO
-import com.rabelo.spacemess.controller.dto.SendCommandRequestDTO
-import com.rabelo.spacemess.controller.dto.SpaceProbeResponseDTO
+import com.rabelo.spacemess.service.dto.LandProbeRequestDTO
+import com.rabelo.spacemess.service.dto.SendCommandRequestDTO
+import com.rabelo.spacemess.service.dto.SpaceProbeResponseDTO
 import com.rabelo.spacemess.service.SpaceProbeService
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.slf4j.Logger
@@ -38,6 +38,7 @@ class SpaceProbeController(private val spaceProbeService: SpaceProbeService) {
 
     @PatchMapping("/{id}/land")
     @ApiResponse(responseCode = "200", description = "Land a probe in a planet")
+    @ApiResponse(responseCode = "404", description = "The specified resource was not found")
     fun landProbe(
         @PathVariable @Valid id: Int,
         @RequestBody @Valid landProbeRequestDTO: LandProbeRequestDTO
@@ -57,6 +58,6 @@ class SpaceProbeController(private val spaceProbeService: SpaceProbeService) {
     }
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(SpaceProbeController::class.java);
+        private val logger: Logger = LoggerFactory.getLogger(SpaceProbeController::class.java)
     }
 }

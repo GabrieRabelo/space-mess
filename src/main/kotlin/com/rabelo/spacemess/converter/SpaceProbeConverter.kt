@@ -1,6 +1,6 @@
 package com.rabelo.spacemess.converter
 
-import com.rabelo.spacemess.controller.dto.SpaceProbeResponseDTO
+import com.rabelo.spacemess.service.dto.SpaceProbeResponseDTO
 import com.rabelo.spacemess.domain.SpaceProbe
 import org.springframework.stereotype.Component
 
