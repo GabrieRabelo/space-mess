@@ -77,3 +77,9 @@ tasks.test {
         println("file://$buildDir/reports/jacoco/test/html/index.html")
     }
 }
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+    }
+}
