@@ -2,8 +2,8 @@ package com.rabelo.spacemess.service
 
 import com.rabelo.spacemess.controller.PlanetController
 import com.rabelo.spacemess.converter.PlanetConverter
-import com.rabelo.spacemess.controller.dto.CreatePlanetDTO
-import com.rabelo.spacemess.controller.dto.PlanetResponseDTO
+import com.rabelo.spacemess.service.dto.CreatePlanetDTO
+import com.rabelo.spacemess.service.dto.PlanetResponseDTO
 import com.rabelo.spacemess.repository.PlanetRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -30,6 +30,6 @@ class PlanetService(
     }
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(PlanetController::class.java);
+        private val logger: Logger = LoggerFactory.getLogger(PlanetController::class.java)
     }
 }

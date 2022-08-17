@@ -1,8 +1,8 @@
 package com.rabelo.spacemess.service
 
-import com.rabelo.spacemess.controller.dto.LandProbeRequestDTO
-import com.rabelo.spacemess.controller.dto.SendCommandRequestDTO
-import com.rabelo.spacemess.controller.dto.SpaceProbeResponseDTO
+import com.rabelo.spacemess.service.dto.LandProbeRequestDTO
+import com.rabelo.spacemess.service.dto.SendCommandRequestDTO
+import com.rabelo.spacemess.service.dto.SpaceProbeResponseDTO
 import com.rabelo.spacemess.converter.SpaceProbeConverter
 import com.rabelo.spacemess.domain.SpaceProbe
 import com.rabelo.spacemess.exception.IllegalPositionException
@@ -32,15 +32,23 @@ class SpaceProbeService(
         return spaceProbeRepository.findAll()
             .map { spaceProbeConverter.toSpaceProbeResponse(it) }
             .toList()
-            .also { logger.debug("Successfully listed all probes." ) }
+            .also { logger.debug("Successfully listed all probes.") }
     }
 
     fun landProbe(probeId: Int, landProbeRequest: LandProbeRequestDTO): SpaceProbeResponseDTO {
-        val planet = planetRepository.findById(landProbeRequest.planetId).orElseGet { throw NotFoundException("") }
-        val probe = spaceProbeRepository.findById(probeId).orElseGet { throw NotFoundException("") }
+        val planet = planetRepository.findById(landProbeRequest.planetId).orElseGet {
+            val errorMessage = "Planet with id ${landProbeRequest.planetId} not found"
+            logger.error(errorMessage)
+            throw NotFoundException(errorMessage)
+        }
+        val probe = spaceProbeRepository.findById(probeId).orElseGet {
+            val errorMessage = "Probe with id $probeId not found in database"
+            logger.error(errorMessage)
+            throw NotFoundException(errorMessage)
+        }
 
         if (probe.isLanded()) {
-            val errorMessage = "Probe is already landed on a planet.";
+            val errorMessage = "Probe is already landed on a planet."
             logger.error(errorMessage)
             throw ProbeAlreadyOnPlanetException(errorMessage)
         }
@@ -58,7 +66,7 @@ class SpaceProbeService(
     fun sendCommand(probeId: Int, sendCommandRequestDTO: SendCommandRequestDTO): SpaceProbeResponseDTO {
         val probe = spaceProbeRepository.findById(probeId).orElseGet { throw NotFoundException("") }
 
-        try{
+        try {
             probe.receiveCommand(sendCommandRequestDTO.command)
         } catch (ex: IllegalPositionException) {
             logger.warn("Probe {} detected an obstacle, stop moving.", probeId)
@@ -70,6 +78,6 @@ class SpaceProbeService(
     }
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(SpaceProbeService::class.java);
+        private val logger: Logger = LoggerFactory.getLogger(SpaceProbeService::class.java)
     }
 }
