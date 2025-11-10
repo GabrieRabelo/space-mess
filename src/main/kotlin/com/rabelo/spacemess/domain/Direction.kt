@@ -19,7 +19,7 @@ enum class Direction {
 
     WEST {
         override fun left() = SOUTH
-        override fun right() = WEST
+        override fun right() = NORTH
     };
 
     abstract fun left(): Direction

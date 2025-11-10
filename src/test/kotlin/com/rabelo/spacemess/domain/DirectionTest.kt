@@ -33,11 +33,11 @@ class DirectionTest {
     }
 
     @Test
-    fun `when direction is WEST left should be SOUTH and right should be NORTH`() {
+    fun `when direction is WEST left should be NORTH and right should be NORTH`() {
 
-        val direction = Direction.SOUTH
+        val direction = Direction.WEST
 
-        assertThat(direction.left()).isEqualTo(Direction.EAST)
-        assertThat(direction.right()).isEqualTo(Direction.WEST)
+        assertThat(direction.left()).isEqualTo(Direction.SOUTH)
+        assertThat(direction.right()).isEqualTo(Direction.NORTH)
     }
 }
